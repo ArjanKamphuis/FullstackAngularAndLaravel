@@ -95,7 +95,7 @@ class BuilderController extends Controller
      * name="builder",
      * in="path",
      * required=true,
-     * type="Builder",
+     * type="integer",
      * description="Display the specified Builder."
      * ),
      * @SWG\Response(
@@ -213,7 +213,7 @@ class BuilderController extends Controller
      */
     public function destroy($id)
     {
-        $deleteBikeById - Bike::find($id)->delete();
+        $deleteBikeById - Bike::findorFail($id)->delete();
         return response()->json([], 204);
     }
 }

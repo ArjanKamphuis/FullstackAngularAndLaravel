@@ -174,17 +174,17 @@
                 }
             }
         },
-        "/api/bikes/{id}": {
+        "/api/bikes/{bike}": {
             "get": {
                 "tags": [
                     "Bikes"
                 ],
-                "summary": "Get Bike by Id",
+                "summary": "Get single Bike",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "bike",
                         "in": "path",
-                        "description": "Display the specified Bike by id.",
+                        "description": "Display the specified Bike.",
                         "required": true,
                         "type": "integer"
                     }
@@ -209,10 +209,10 @@
                     "Bikes"
                 ],
                 "summary": "Update Bike",
-                "description": "Update the specified Bike by Id.",
+                "description": "Update the specified Bike.",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "bike",
                         "in": "path",
                         "description": "Bike id to update",
                         "required": true,
@@ -245,7 +245,9 @@
                         "description": "Invalid HTTP Method"
                     }
                 }
-            },
+            }
+        },
+        "/api/bikes/{id}": {
             "delete": {
                 "tags": [
                     "Bikes"
@@ -328,17 +330,17 @@
                 }
             }
         },
-        "/api/builders/{id}": {
+        "/api/builders/{builder}": {
             "get": {
                 "tags": [
                     "Builders"
                 ],
-                "summary": "Get Builder by Id",
+                "summary": "Get single Builder",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "builder",
                         "in": "path",
-                        "description": "Display the specified Builder by id.",
+                        "description": "Display the specified Builder.",
                         "required": true,
                         "type": "integer"
                     }
@@ -357,7 +359,9 @@
                         "description": "Invalid HTTP Method"
                     }
                 }
-            },
+            }
+        },
+        "/api/builders/{id}": {
             "put": {
                 "tags": [
                     "Builders"
@@ -745,7 +749,7 @@
                 "rating"
             ],
             "properties": {
-                "biker_id": {
+                "bike_id": {
                     "description": "Bike id",
                     "type": "integer",
                     "example": "1"

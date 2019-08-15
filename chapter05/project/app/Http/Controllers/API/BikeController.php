@@ -119,7 +119,7 @@ class BikeController extends Controller
      * name="bike",
      * in="path",
      * required=true,
-     * type="Bike",
+     * type="integer",
      * description="Display the specified Bike."
      * ),
      * @SWG\Response(
@@ -158,7 +158,7 @@ class BikeController extends Controller
      * name="bike",
      * in="path",
      * required=true,
-     * type="Bike",
+     * type="integer",
      * description="Bike id to update"
      * ),
      * @SWG\Parameter(

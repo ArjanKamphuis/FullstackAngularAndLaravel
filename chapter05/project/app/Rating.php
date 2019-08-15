@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 * definition="Rating",
 * required={"bike_id", "user_id", "rating"},
 * @SWG\Property(
-* property="biker_id",
+* property="bike_id",
 * type="integer",
 * description="Bike id",
 * example="1"
