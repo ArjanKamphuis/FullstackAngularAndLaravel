@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
+use Validator;
 use App\Builder;
+use App\Http\Resources\BuildersResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -71,7 +73,12 @@ class BuilderController extends Controller
      */
     public function store(Request $request)
     {
-        return Builder::create($request->all());
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'description' => 'required',
+            'location' => 'required'
+        ]);
+        return $validator->fails() ? response()->json($validator->errors(), 422) : Builder::create($request->all());
     }
 
     /**
@@ -81,15 +88,15 @@ class BuilderController extends Controller
      * @return \Illuminate\Http\Response
      * 
      * @SWG\Get(
-     * path="/api/builders/{id}",
+     * path="/api/builders/{builder}",
      * tags={"Builders"},
-     * summary="Get Builder by Id",
+     * summary="Get single Builder",
      * @SWG\Parameter(
-     * name="id",
+     * name="builder",
      * in="path",
      * required=true,
-     * type="integer",
-     * description="Display the specified Builder by id."
+     * type="Builder",
+     * description="Display the specified Builder."
      * ),
      * @SWG\Response(
      * response=200,
@@ -106,9 +113,9 @@ class BuilderController extends Controller
      * )
      * )
      */
-    public function show($id)
+    public function show(Builder $builder)
     {
-        return Builder::with('Bike')->findOrFail($id);
+        return BuildersResrouce($builder);
     }
 
     /**
@@ -158,7 +165,15 @@ class BuilderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $updateBuilderById = Builder::findOrFail($id);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'description' => 'required',
+            'location' => 'required'
+        ]);
+        if($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        
         $updateBuilderById->update($request->all());
         return $updateBuilderById;
     }

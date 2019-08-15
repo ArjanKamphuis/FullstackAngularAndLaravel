@@ -2,12 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use Validator;
 use App\Bike;
+use App\Http\Resources\BikesResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class BikeController extends Controller
 {
+    /**
+     * Protect update and delete methods, only for authenticated users.
+     *
+     * @return Unauthorized
+     */
+    public function __construct() {
+        $this->middleware('auth:api')->except(['index']);
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -71,25 +82,45 @@ class BikeController extends Controller
      */
     public function store(Request $request)
     {
-        return Bike::create($request->all());
+        $validator = Validator::make($request->all(), [
+            'make' => 'required',
+            'model' => 'required',
+            'year' => 'required',
+            'mods' => 'required',
+            'builder_id' => 'required'
+        ]);
+        if($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        
+        $createBike = Bike::create([
+            'user_id' => $request->user()->id,
+            'make' => $request->make,
+            'model' => $request->model,
+            'year' => $request->year,
+            'mods' => $request->mods,
+            'picture' => $request->picture
+        ]);
+
+        return new BikesResource($createBike);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Bike  $bike
      * @return \Illuminate\Http\Response
      * 
      * @SWG\Get(
-     * path="/api/bikes/{id}",
+     * path="/api/bikes/{bike}",
      * tags={"Bikes"},
-     * summary="Get Bike by Id",
+     * summary="Get single Bike",
      * @SWG\Parameter(
-     * name="id",
+     * name="bike",
      * in="path",
      * required=true,
-     * type="integer",
-     * description="Display the specified Bike by id."
+     * type="Bike",
+     * description="Display the specified Bike."
      * ),
      * @SWG\Response(
      * response=200,
@@ -106,28 +137,28 @@ class BikeController extends Controller
      * )
      * )
      */
-    public function show($id)
+    public function show(Bike $bike)
     {
-        return Bike::with(['items', 'builder', 'garages'])->findOrFail($id);
+        return new BikesResource($bike);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Bike  $bike
      * @return \Illuminate\Http\Response
      *
      * @SWG\Put(
-     * path="/api/bikes/{id}",
+     * path="/api/bikes/{bike}",
      * tags={"Bikes"},
      * summary="Update Bike",
-     * description="Update the specified Bike by Id.",
+     * description="Update the specified Bike.",
      * @SWG\Parameter(
-     * name="id",
+     * name="bike",
      * in="path",
      * required=true,
-     * type="integer",
+     * type="Bike",
      * description="Bike id to update"
      * ),
      * @SWG\Parameter(
@@ -156,11 +187,14 @@ class BikeController extends Controller
      * )
      * )
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Bike $bike)
     {
-        $updateBikeById = Bike::findOrFail($id);
-        $updateBikeById->update($request->all());
-        return $updateBikeById;
+        if ($request->user()->id !== $bike->user_id) {
+            return response()->json(['error' => 'You can only edit your own bike.'], 403);
+        }
+        
+        $bike->update($request->only(['make', 'model', 'year', 'mods', 'picture']));
+        return new BikesResource($bike);
     }
 
     /**
@@ -198,7 +232,7 @@ class BikeController extends Controller
      */
     public function destroy($id)
     {
-        $deleteBikeById - Bike::find($id)->delete();
+        Bike::findOrFail($id)->delete();
         return response()->json([], 204);
     }
 }
