@@ -17,7 +17,8 @@ class BikesResource extends JsonResource
         return [
             'id' => $this->id,
             'make' => $this->make,
-            'model' => $this->year,
+            'model' => $this->model,
+            'year' => $this->year,
             'mods' => $this->mods,
             'picture' => $this->picture,
             'garages' => $this->garages,
@@ -25,7 +26,7 @@ class BikesResource extends JsonResource
             'builder' => $this->builder,
             'user' => $this->user,
             'ratings' => $this->ratings,
-            'average_ratings' => $this->ratings->avg('rating'),
+            'average_rating' => $this->ratings->avg('rating'),
             'created_at' => (string)$this->created_at,
             'updated_at' => (string)$this->updated_at
         ];

@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Bike;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BuildersResource extends JsonResource

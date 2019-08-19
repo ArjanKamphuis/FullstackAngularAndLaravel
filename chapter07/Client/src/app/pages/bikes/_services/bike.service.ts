@@ -20,26 +20,26 @@ export class BikeService {
 	}
 
 	getBikes(): Observable<Bike[]> {
-		return this.http.get<Bike[]>(this.bikesUrl).pipe(catchError(this.handleError('getBikes')));
+		return this.http.get<Bike[]>(this.bikesUrl).pipe(catchError(this.handleError('getBikes', [])));
 	}
 
 	getBikeDetail(id: number): Observable<Bike[]> {
 		return this.http.get<Bike[]>(`${this.bikesUrl}/${id}`)
-			.pipe(catchError(this.handleError('getBikeDetail')));
+			.pipe(catchError(this.handleError('getBikeDetail', [])));
 	}
 
 	addBike(bike: Bike): Observable<Bike> {
-		return this.http.post<Bike[]>(this.bikesUrl, bike)
-			.pipe(catchError(this.handleError('addBike', [])));
+		return this.http.post<Bike>(this.bikesUrl, bike)
+			.pipe(catchError(this.handleError('addBike', bike)));
 	}
 
-	updateBike(bike: Bike, id: number) : Observable<Bike> {
+	updateBike(id: number, bike: Bike) : Observable<Bike> {
 		return this.http.put<Bike>(`${this.bikesUrl}/${id}`, bike)
-			.pipe(catchError(this.handleError('updateBike', [])));
+			.pipe(catchError(this.handleError('updateBike', bike)));
 	}
 
-	deleteBike(id: number): Observable<Bike[]> {
-		return this.http.delete<Bike[]>(`${this.bikesUrl}/${id}`, bike)
+	deleteBike(id: number): Observable<any> {
+		return this.http.delete<Bike[]>(`${this.bikesUrl}/${id}`)
 			.pipe(catchError(this.handleError('deleteBike')));
 	}
 

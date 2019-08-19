@@ -15,6 +15,7 @@ import { NavComponent } from './layout/nav/nav.component';
 
 import { HttpErrorHandler } from './shared/_services/http-handle-error.service';
 import { AppHttpInterceptorService } from './shared/_services/http-interceptor.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,9 @@ import { AppHttpInterceptorService } from './shared/_services/http-interceptor.s
 	BikesModule,
 	BuildersModule,
 	HomeModule,
-	ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+	HttpClientModule,
+	ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+	NgbModule.forRoot()
   ],
   providers: [Title, HttpErrorHandler, {
 	provide: HTTP_INTERCEPTORS,

@@ -7,7 +7,6 @@ use App\Rating;
 use App\Http\Resources\RatingResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\RatingResource;
 
 class RatingController extends Controller
 {

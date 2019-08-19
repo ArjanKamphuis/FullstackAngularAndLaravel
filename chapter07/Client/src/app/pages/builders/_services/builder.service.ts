@@ -20,16 +20,16 @@ export class BuilderService {
 	}
 
 	getBuilders(): Observable<Builder[]> {
-		return this.http.get<Builder[]>(this.buildersUrl).pipe(catchError(this.handleError('getBuilders')));
+		return this.http.get<Builder[]>(this.buildersUrl).pipe(catchError(this.handleError('getBuilders', [])));
 	}
 
 	getBuilderDetail(id: number): Observable<Builder[]> {
 		return this.http.get<Builder[]>(`${this.buildersUrl}/${id}`)
-			.pipe(catchError(this.handleError('getBuilderDetail')));
+			.pipe(catchError(this.handleError('getBuilderDetail', [])));
 	}
 
 	addBuilder(builder: Builder): Observable<Builder> {
-		return this.http.post<Builder[]>(this.buildersUrl, builder)
+		return this.http.post<Builder>(this.buildersUrl, builder)
 			.pipe(catchError(this.handleError('addBuilder', builder)));
 	}
 
@@ -38,8 +38,8 @@ export class BuilderService {
 			.pipe(catchError(this.handleError('updateBuilder', builder)));
 	}
 
-	deleteBuilder(id: number): Observable<Builder[]> {
-		return this.http.delete<Builder[]>(`${this.buildersUrl}/${id}`, builder)
+	deleteBuilder(id: number): Observable<any> {
+		return this.http.delete<Builder[]>(`${this.buildersUrl}/${id}`)
 			.pipe(catchError(this.handleError('deleteBuilder')));
 	}
 }

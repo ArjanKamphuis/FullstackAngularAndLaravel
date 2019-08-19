@@ -41,7 +41,7 @@ class BikeController extends Controller
      */
     public function index()
     {
-        return Bike::all();
+        return Bike::withCount('ratings')->get();
     }
 
     /**
@@ -192,8 +192,20 @@ class BikeController extends Controller
         if ($request->user()->id !== $bike->user_id) {
             return response()->json(['error' => 'You can only edit your own bike.'], 403);
         }
+
+        $validator = Validator::make($request->all(), [
+            'make' => 'required',
+            'model' => 'required',
+            'year'=> 'required',
+            'mods'=> 'required',
+            'picture' => 'required',
+            'builder_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
         
-        $bike->update($request->only(['make', 'model', 'year', 'mods', 'picture']));
+        $bike->update($request->only(['make', 'model', 'year', 'mods', 'picture', 'builder_id']));
         return new BikesResource($bike);
     }
 

@@ -115,7 +115,7 @@ class BuilderController extends Controller
      */
     public function show(Builder $builder)
     {
-        return BuildersResrouce($builder);
+        return new BuildersResource($builder);
     }
 
     /**

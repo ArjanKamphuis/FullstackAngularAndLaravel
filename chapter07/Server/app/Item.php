@@ -44,7 +44,7 @@ class Item extends Model
      * @var array
      */
     protected $fillable = [
-        'type', 'name', 'company_id', 'bike_id'
+        'type', 'name', 'company', 'bike_id'
     ];
 
     /**
